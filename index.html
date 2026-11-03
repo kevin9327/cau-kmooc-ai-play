@@ -184,8 +184,18 @@
   .stage-item .st-head {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 8px;
     font-weight: 800;
     margin-bottom: 3px;
+  }
+  .stage-item .st-head span:last-child {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #rankBadge, #stageProgressTxt, #waveCounter {
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .stage-item .st-desc {
     color: var(--text-sub);
