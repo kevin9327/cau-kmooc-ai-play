@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEEP-TECH GUARDIAN : R&D 보안 방어 사령부 | 중앙대학교 K-MOOC AI 플레이 콘텐츠</title>
+<style>
+  :root {
+    --bg-dark: #060b16;
+    --bg-panel: rgba(12, 22, 44, 0.92);
+    --cyan: #00f0ff;
+    --blue: #2979ff;
+    --emerald: #00e676;
+    --amber: #ffab00;
+    --crimson: #ff1744;
+    --purple: #b388ff;
+    --text-main: #eef6ff;
+    --text-sub: #94a9c9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  body {
+    background: radial-gradient(circle at 50% 20%, #0d1d3a 0%, #050912 75%);
+    color: var(--text-main);
+    font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Top Header */
+  header.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 22px;
+    background: rgba(6, 12, 26, 0.95);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.28);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    z-index: 20;
+  }
+  .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cau-badge {
+    background: linear-gradient(135deg, #004098, #0072ff);
+    color: #fff;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 240, 255, 0.6);
+    letter-spacing: 0.4px;
+  }
+  .game-title {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, #ffffff, #00f0ff, #7ef9ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .course-meta {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ui {
+    background: rgba(0, 240, 255, 0.1);
+    color: var(--cyan);
+    border: 1px solid rgba(0, 240, 255, 0.45);
+    padding: 6px 13px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .btn-ui:hover {
+    background: rgba(0, 240, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+  }
+  .btn-ui.primary {
+    background: linear-gradient(135deg, #00b4d8, #0077b6);
+    color: #fff;
+    border-color: #00f0ff;
+  }
+
+  /* Main Layout */
+  .main-stage {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 310px 1fr 330px;
+    gap: 14px;
+    padding: 14px 18px;
+    max-width: 1620px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  @media (max-width: 1200px) {
+    .main-stage { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid rgba(0, 240, 255, 0.22);
+    border-radius: 14px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .panel-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--cyan);
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 8px;
+  }
+
+  /* Left Column: Status & Curriculum Progress */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-card {
+    background: rgba(6, 13, 28, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .stat-label { font-size: 11px; color: var(--text-sub); }
+  .stat-val { font-size: 20px; font-weight: 900; margin-top: 3px; color: #fff; }
+  .stat-val.cyan { color: var(--cyan); }
+  .stat-val.emerald { color: var(--emerald); }
+  .stat-val.amber { color: var(--amber); }
+
+  .bar-wrap {
+    background: rgba(255, 255, 255, 0.08);
+    height: 8px;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+
+  .stage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .stage-item {
+    padding: 9px 11px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .stage-item.active {
+    background: rgba(0, 240, 255, 0.13);
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  }
+  .stage-item.cleared {
+    border-color: rgba(0, 230, 118, 0.5);
+  }
+  .stage-item .st-head {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    margin-bottom: 3px;
+  }
+  .stage-item .st-desc {
+    color: var(--text-sub);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  /* Center Column: Interactive Radar Canvas + Defense Controls */
+  .center-panel {
+    position: relative;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .canvas-container {
+    position: relative;
+    width: 100%;
+    height: 470px;
+    background: #040812;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 240, 255, 0.32);
+    overflow: hidden;
+  }
+  canvas#gameCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: crosshair;
+  }
+  /* Defense Mode Selector Bar */
+  .defense-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .def-btn {
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(10, 19, 38, 0.9);
+    color: #fff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .def-btn:hover {
+    transform: translateY(-1px);
+  }
+  .def-btn.active-mode {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.45);
+    border-width: 2px;
+  }
+  .def-btn.m-phys { border-color: #ffab00; }
+  .def-btn.m-adm  { border-color: #b388ff; }
+  .def-btn.m-tech { border-color: #00f0ff; }
+  .def-btn.m-pass { border-color: #00e676; }
+  .def-key {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .m-phys .def-key { background: #ffab00; color: #000; }
+  .m-adm .def-key  { background: #b388ff; color: #000; }
+  .m-tech .def-key { background: #00f0ff; color: #000; }
+  .m-pass .def-key { background: #00e676; color: #000; }
+  .def-name { font-size: 13px; font-weight: 800; display: block; }
+  .def-sub { font-size: 10.5px; color: var(--text-sub); }
+
+  /* Right Column: DAVINCI-AI Advisor & Active Threat / Quiz Panel */
+  .ai-box {
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.08), rgba(12, 22, 44, 0.9));
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .ai-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+  .pulse-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--emerald);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--emerald);
+  }
+  .log-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11.5px;
+  }
+  .log-entry {
+    padding: 7px 9px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--cyan);
+    line-height: 1.4;
+  }
+  .log-entry.bad { border-left-color: var(--crimson); background: rgba(255, 23, 68, 0.08); }
+  .log-entry.good { border-left-color: var(--emerald); background: rgba(0, 230, 118, 0.08); }
+
+  /* Overlay Modals inside Canvas (Title, Quiz, Clear, Codex) */
+  .overlay-modal {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 9, 20, 0.90);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 15;
+    text-align: center;
+  }
+  .overlay-modal.hidden { display: none; }
+  .modal-card {
+    max-width: 680px;
+    width: 100%;
+    background: rgba(11, 22, 46, 0.97);
+    border: 1px solid rgba(0, 240, 255, 0.45);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.75);
+    text-align: left;
+  }
+  .modal-badge {
+    display: inline-block;
+    background: rgba(0, 240, 255, 0.14);
+    color: var(--cyan);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 99px;
+    margin-bottom: 10px;
+  }
+  .modal-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .modal-desc {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .quiz-opt {
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .quiz-opt:hover {
+    background: rgba(0, 240, 255, 0.15);
+    border-color: var(--cyan);
+  }
+  .codex-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-height: 290px;
+    overflow-y: auto;
+    margin-bottom: 14px;
+  }
+  .codex-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 9px;
+    padding: 10px;
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+  .codex-item strong { color: var(--cyan); display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-wrap">
+    <span class="cau-badge">중앙대학교 K-MOOC AI 플레이 콘텐츠</span>
+    <div>
+      <div class="game-title">DEEP-TECH GUARDIAN : R&amp;D 보안 방어 사령부</div>
+      <div class="course-meta">배경 강좌: <b>첨단전략산업과 기술보호 (연구개발보안)</b> (장항배 교수) | 제작: 소병권 (K-MOOC ID: petaflo1993)</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button class="btn-ui" onclick="openCodex()">강좌 핵심 보안 도감 (Codex)</button>
+    <button class="btn-ui" onclick="openHowTo()">플레이 방법</button>
+    <button class="btn-ui" id="soundBtn" onclick="toggleSound()">사운드: ON</button>
+    <button class="btn-ui primary" onclick="startCampaign(0)">처음부터 재시작</button>
+  </div>
+</header>
+
+<main class="main-stage">
+  <!-- LEFT PANEL -->
+  <section class="panel">
+    <div class="panel-title">
+      <span>R&amp;D 보안 관제 지표 (STATUS)</span>
+      <span id="rankBadge" style="color:var(--emerald);">RANK: S</span>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">보안 무결성 (INTEGRITY)</div>
+        <div class="stat-val emerald" id="hpVal">100%</div>
+        <div class="bar-wrap"><div class="bar-fill" id="hpBar" style="width:100%;background:var(--emerald);"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">보호 기술자산 (SCORE)</div>
+        <div class="stat-val cyan" id="scoreVal">0</div>
+        <div style="font-size:10.5px;color:var(--text-sub);margin-top:4px;">콤보: <b id="comboVal" style="color:var(--amber);">0</b>x</div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:4px;">
+      <span>K-MOOC 주차별 작전 단계 (5 STAGES)</span>
+      <span id="stageProgressTxt">1 / 5</span>
+    </div>
+    <div class="stage-list" id="stageList"></div>
+
+    <div class="stat-card" style="margin-top:auto;">
+      <div class="stat-label" style="color:var(--cyan);font-weight:700;">현재 장착 방어 프로토콜</div>
+      <div id="currentModeTxt" style="font-size:13px;font-weight:800;margin-top:4px;color:#ffab00;">[1] 물리적 보안 방벽 (Physical)</div>
+      <div style="font-size:11px;color:var(--text-sub);margin-top:3px;">클릭 또는 숫자키(1~4)로 위협 유형에 맞는 프로토콜을 선택한 뒤 레이더의 패킷을 클릭하세요!</div>
+    </div>
+  </section>
+
+  <!-- CENTER PANEL -->
+  <section class="panel center-panel">
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="920" height="470"></canvas>
+
+      <!-- MODAL OVERLAY -->
+      <div class="overlay-modal" id="modalOverlay">
+        <div class="modal-card" id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- DEFENSE CONTROLS -->
+    <div class="defense-bar">
+      <button class="def-btn m-phys active-mode" id="modeBtn0" onclick="setDefenseMode(0)">
+        <span class="def-key">KEY 1</span>
+        <span class="def-name">물리적 보안 방벽</span>
+        <span class="def-sub">통제구역·클린룸·무단침입·장비반출 차단</span>
+      </button>
+      <button class="def-btn m-adm" id="modeBtn1" onclick="setDefenseMode(1)">
+        <span class="def-key">KEY 2</span>
+        <span class="def-name">관리적 보안 프로토콜</span>
+        <span class="def-sub">비밀유지계약(NDA)·보안서약·인력·연구노트</span>
+      </button>
+      <button class="def-btn m-tech" id="modeBtn2" onclick="setDefenseMode(2)">
+        <span class="def-key">KEY 3</span>
+        <span class="def-name">기술적 사이버 실드</span>
+        <span class="def-sub">망분리·DRM·방화벽·랜섬웨어·해킹 차단</span>
+      </button>
+      <button class="def-btn m-pass" id="modeBtn3" onclick="setDefenseMode(3)">
+        <span class="def-key">KEY 4</span>
+        <span class="def-name">정상 연구활동 승인</span>
+        <span class="def-sub">적법 특허출원·수출승인·보안검토 완료건 통과</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- RIGHT PANEL -->
+  <section class="panel">
+    <div class="panel-title">
+      <span>DAVINCI-AI 보안 어드바이저</span>
+      <span>LIVE</span>
+    </div>
+    <div class="ai-box">
+      <div class="ai-header">
+        <span class="pulse-dot"></span>
+        <span id="aiTitle">중앙대 연구개발보안 AI 브리핑</span>
+      </div>
+      <div id="aiMessage">
+        환영합니다, 보안 사령관님! 중앙대학교 K-MOOC <b>「첨단전략산업과 기술보호 (연구개발보안)」</b> 강좌의 1~5주차 핵심 지식을 바탕으로 국가핵심기술 R&amp;D 센터를 방어하세요.
+      </div>
+    </div>
+
+    <div class="panel-title">
+      <span>실시간 위협 판정 &amp; 학습 피드백</span>
+      <span id="waveCounter">WAVE READY</span>
+    </div>
+    <div class="log-list" id="logList"></div>
+
+    <div class="stat-card" style="background:rgba(0,240,255,0.06);border-color:rgba(0,240,255,0.25);">
+      <div class="stat-label" style="color:var(--cyan);font-weight:800;">핵심 매칭 규칙 요약</div>
+      <div style="font-size:11px;line-height:1.5;color:var(--text-main);margin-top:4px;">
+        • <b style="color:#ffab00;">주황 패킷(물리 위협)</b> → <b>[1] 물리적 보안</b><br>
+        • <b style="color:#b388ff;">보라 패킷(관리/인력 위협)</b> → <b>[2] 관리적 보안</b><br>
+        • <b style="color:#00f0ff;">청록 패킷(사이버 위협)</b> → <b>[3] 기술적 보안</b><br>
+        • <b style="color:#00e676;">초록 패킷(정상 연구자산)</b> → <b>[4] 정상 승인</b>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const STAGES = [
+  {
+    id: 1,
+    week: "1주차",
+    title: "첨단전략산업과 연구개발보안의 개념",
+    subtitle: "국가핵심기술 지정 및 R&D 보안 등급 분류 체계 확립",
+    briefing: "첨단전략산업(반도체·디스플레이·이차전지·바이오)의 초격차 기술은 국가 안보와 직결됩니다. 연구개발 초기 단계부터 물리적·관리적·기술적 3대 보안 체계를 가동하여 위협을 요격하세요!",
+    threats: [
+      { label: "비인가 외부인 클린룸 무단 출입 시도", type: 0, explain: "연구시설 출입통제·생체인식은 [물리적 보안] 영역입니다." },
+      { label: "참여연구원 비밀유지서약서(NDA) 미체결", type: 1, explain: "연구 참여 인력의 보안서약 및 등급 분류는 [관리적 보안]입니다." },
+      { label: "연구망 외부 포트 스캐닝 및 악성코드 유입", type: 2, explain: "네트워크 방화벽 및 침입탐지(IDS)는 [기술적 보안]입니다." },
+      { label: "국가연구개발혁신법 보안과제 공식 협약서", type: 3, explain: "적법한 보안과제 협약 문서는 [정상 연구활동 승인]으로 처리합니다." },
+      { label: "연구동 서버실 잠금장치 해제 시도", type: 0, explain: "통제구역 물리적 잠금 및 CCTV 관제는 [물리적 보안]입니다." },
+      { label: "연구개발 산출물 보안등급 분류표 승인", type: 3, explain: "보안등급이 부여된 정상 산출물은 [정상 연구활동 승인] 대상입니다." }
+    ],
+    quiz: {
+      q: "[1주차 보스 검증] 「산업기술의 유출방지 및 보호에 관한 법률」 및 연구개발보안 체계에서, 해외 유출 시 국가의 안전보장 및 국민경제 발전에 중대한 악영향을 줄 우려가 있어 국가가 지정·보호하는 기술은?",
+      opts: [
+        "① 국가핵심기술 (National Core Technology)",
+        "② 일반 오픈소스 공개 기술",
+        "③ 단순 상표권 및 디자인 시안",
+        "④ 만료된 공지 특허 기술"
+      ],
+      ans: 0,
+      feedback: "정답입니다! 국가핵심기술은 기술적·경제적 가치가 높아 해외로 유출될 경우 국가 안전보장 및 국민경제 발전에 중대한 악영향을 줄 우려가 있는 기술로, 법령에 의해 엄격히 보호됩니다."
+    }
+  },
+  {
+    id: 2,
+    week: "2주차",
+    title: "영업비밀 보호제도와 3대 성립요건",
+    subtitle: "비공지성 · 경제적 유용성 · 비밀관리성 완벽 방호",
+    briefing: "특허는 공개를 대가로 독점권을 얻지만, 핵심 공정 레시피는 '영업비밀'로 보호해야 합니다. 부정경쟁방지법상 영업비밀로 인정받기 위한 3대 요건(비공지성·경제적 유용성·비밀관리성) 위협을 방어하세요!",
+    threats: [
+      { label: "핵심 공정 레시피 문서에 '대외비' 표시 누락", type: 1, explain: "비밀관리성 유지를 위한 비밀표시·규정 관리는 [관리적 보안]입니다." },
+      { label: "퇴직 예정자의 핵심 설계도면 무단 출력·반출", type: 0, explain: "문서 세단 및 물품 반출입 검색대는 [물리적 보안]입니다." },
+      { label: "사내 문서보안(DRM) 암호화 우회 툴 실행", type: 2, explain: "전자문서 암호화(DRM) 및 접근권한 통제는 [기술적 보안]입니다." },
+      { label: "전자연구노트 시점인증(Time-Stamp) 완료본", type: 3, explain: "시점인증과 대외비 등급이 부여된 연구노트는 [정상 승인]합니다." },
+      { label: "외부 협력사 인원의 연구실 스마트폰 불법 촬영", type: 0, explain: "방문자 카메라 스티커 부착 및 반입 통제는 [물리적 보안]입니다." },
+      { label: "영업비밀 관리규정 및 접근권한자 지정 공문", type: 3, explain: "비밀관리성을 입증하는 핵심 증빙이므로 [정상 승인]합니다." }
+    ],
+    quiz: {
+      q: "[2주차 보스 검증] 「부정경쟁방지 및 영업비밀보호에 관한 법률」상 '영업비밀'로 인정받기 위한 3대 성립요건에 해당하지 않는 것은?",
+      opts: [
+        "① 비공지성 (공연히 알려져 있지 아니할 것)",
+        "② 경제적 유용성 (독립된 경제적 가치를 가질 것)",
+        "③ 비밀관리성 (비밀로 유지·관리되고 있을 것)",
+        "④ 전 세계 학술지 의무 사전 공개성"
+      ],
+      ans: 3,
+      feedback: "정답입니다! 영업비밀의 3대 성립요건은 비공지성, 경제적 유용성, 비밀관리성입니다. 사전 공개 시 비공지성이 상실됩니다."
+    }
+  },
+  {
+    id: 3,
+    week: "3주차",
+    title: "연구개발 전주기 보안관리 실무",
+    subtitle: "물리적 · 관리적 · 기술적 보호조치 통합 관제",
+    briefing: "연구기획 → 수행 → 평가 → 활용의 R&D 전주기에서 보안 공백이 발생하기 쉽습니다. 특히 망분리 우회, 비인가 저장매체(USB), 학회 발표 전 사전보안성 검토 누락을 정밀 차단하세요!",
+    threats: [
+      { label: "비인가 개인 USB 메모리 연구용 PC 연결", type: 2, explain: "매체제어(USB 차단) 솔루션 및 DLP 통제는 [기술적 보안]입니다." },
+      { label: "학술대회 논문 발표 전 사전 보안성 검토 미실시", type: 1, explain: "연구성과 공개 전 보안성 심의 절차는 [관리적 보안]입니다." },
+      { label: "시제품 보관 창고 생체인식 리더기 파손 시도", type: 0, explain: "시제품 보관실 물리적 침입 방어는 [물리적 보안]입니다." },
+      { label: "보안성 검토를 통과한 특허 명세서 출원 건", type: 3, explain: "적법한 보안심의를 거친 특허 출원은 [정상 승인]합니다." },
+      { label: "업무망-인터넷망 논리적 망분리 우회 VPN 접속", type: 2, explain: "망분리 정책 및 비인가 VPN 차단은 [기술적 보안]입니다." },
+      { label: "정기 연구보안 교육 이수 및 서약 완료 데이터", type: 3, explain: "연구원 보안교육 이수 데이터는 [정상 승인] 자산입니다." }
+    ],
+    quiz: {
+      q: "[3주차 보스 검증] 연구개발 산출물(논문, 학회 발표자료 등)을 외부에 공개하기 전, 국가핵심기술이나 영업비밀이 포함되었는지 사전에 점검하는 필수 관리적 보안 절차는?",
+      opts: [
+        "① 연구성과 공개 전 사전 보안성 검토 (연구보안심의)",
+        "② 모든 연구데이터의 개인 블로그 즉시 업로드",
+        "③ 연구노트 원본 전량 폐기",
+        "④ 망분리 시스템 강제 해제"
+      ],
+      ans: 0,
+      feedback: "정답입니다! 학회 발표나 논문 게재 전 반드시 사전 보안성 검토를 거쳐 핵심 기술정보 유출과 공지화를 방지해야 합니다."
+    }
+  },
+  {
+    id: 4,
+    week: "4주차",
+    title: "글로벌 공동연구 및 인력유출 방어",
+    subtitle: "국제 공동R&D 기술안보 · 위장 헤드헌팅 차단",
+    briefing: "글로벌 공동연구와 해외 인재 교류를 악용한 기술유출이 급증하고 있습니다. 해외 기관과의 공동연구 협약 보안조항 누락, 클라우드 동기화 유출, 핵심 연구원 브로커 포섭을 막아내세요!",
+    threats: [
+      { label: "해외 브로커의 핵심 연구원 위장 헤드헌팅 및 기밀 요구", type: 1, explain: "핵심인력 전직제한 약정 및 인사보안 상담은 [관리적 보안]입니다." },
+      { label: "국제 공동연구용 퍼블릭 클라우드 전체 공개 설정", type: 2, explain: "클라우드 접근권한 암호화 및 CASB 통제는 [기술적 보안]입니다." },
+      { label: "해외 방문연구원의 야간 실험실 단독 무단 출입", type: 0, explain: "외부 방문연구원 동행 원칙 및 출입통제는 [물리적 보안]입니다." },
+      { label: "산업통상자원부 사전 승인을 득한 국제공동연구 협약", type: 3, explain: "정부 승인 및 보안특약이 체결된 공동연구는 [정상 승인]합니다." },
+      { label: "스피어 피싱 메일('국제학회 초청장.exe') 실행 시도", type: 2, explain: "이메일 APT 악성코드 격리 및 샌드박스는 [기술적 보안]입니다." },
+      { label: "핵심연구원 퇴직 시 보안 체크리스트 및 반납 확인서", type: 3, explain: "정상적인 퇴직 보안 점검 프로세스는 [정상 승인]합니다." }
+    ],
+    quiz: {
+      q: "[4주차 보스 검증] 국가핵심기술을 보유한 연구기관이 외국 기업·대학과 국제 공동연구를 진행하거나 기술을 해외로 이전하고자 할 때 반드시 거쳐야 하는 법적 절차는?",
+      opts: [
+        "① 산업통상자원부장관의 사전 수출승인 또는 신고 절차 이행",
+        "② 담당 연구원 개인 이메일로 즉시 전송",
+        "③ 별도 계약 없이 구두 합의로 기술 제공",
+        "④ 보안등급을 임의로 일반공개로 하향"
+      ],
+      ans: 0,
+      feedback: "정답입니다! 국가핵심기술의 수출이나 해외 공동연구 시 법령에 따른 사전 승인·신고 절차를 반드시 이행해야 합니다."
+    }
+  },
+  {
+    id: 5,
+    week: "5주차",
+    title: "침해사고 대응 및 디지털 포렌식 최종전",
+    subtitle: "APT 복합 공격 격퇴 · 증거보전 · 기술유출 신고 프로토콜",
+    briefing: "최종 스테이지입니다! 국제 산업스파이 조직이 물리 침투, 내부자 매수, 제로데이 랜섬웨어를 동원한 전방위 APT 공격을 감행했습니다. 모든 공격을 방어하고 디지털 포렌식 및 유관기관 신고를 완수하세요!",
+    threats: [
+      { label: "[APT] 제로데이 취약점 기반 연구서버 대량 유출 시그널", type: 2, explain: "이상징후(SIEM/SOAR) 실시간 네트워크 차단은 [기술적 보안]입니다." },
+      { label: "[APT] 매수된 협력사 직원의 백업 외장하드 도난 시도", type: 0, explain: "백업 매체 금고 보관 및 물리적 반출 차단은 [물리적 보안]입니다." },
+      { label: "[APT] 침해사고 은폐 시도 및 비상대응 매뉴얼 미가동", type: 1, explain: "침해사고 보고체계 및 유관기관 즉시 신고는 [관리적 보안]입니다." },
+      { label: "디지털 포렌식 해시값(SHA-256) 무결성 입증 로그", type: 3, explain: "법적 증거능력을 갖춘 포렌식 로그는 [정상 승인]합니다." },
+      { label: "[APT] 연구소 스마트 공조제어 시스템(OT) 해킹 시도", type: 2, explain: "산업제어시스템(OT/ICS) 보안 관제는 [기술적 보안]입니다." },
+      { label: "국가정보원·산업부·경찰청 산업기술유출 합동 대응 요청", type: 3, explain: "유관기관 공식 침해사고 신고 및 공조는 [정상 승인]합니다." }
+    ],
+    quiz: {
+      q: "[5주차 최종 보스 검증] 연구개발보안 침해사고 및 기술유출 발생 시, 법적 증거능력 확보와 피해 최소화를 위한 올바른 초기 대응 원칙은?",
+      opts: [
+        "① 감염·유출 의심 시스템 네트워크 격리 후 디지털 포렌식 무결성(원본 보전) 확보 및 즉시 신고",
+        "② 증거 인멸을 위해 서버 하드디스크를 즉시 포맷",
+        "③ 외부에 알려지지 않도록 내부에서만 은폐 처리",
+        "④ 해커가 요구하는 가상자산을 개인 계좌로 즉시 송금"
+      ],
+      ans: 0,
+      feedback: "완벽합니다! 침해사고 발생 시 네트워크 격리 및 원본 로그 보전(디지털 포렌식 무결성 유지), 그리고 유관기관 즉시 신고가 핵심 원칙입니다."
+    }
+  }
+];
+
+const CODEX_DATA = [
+  { title: "1. 연구개발보안(R&D Security)의 정의", desc: "연구개발 전 과정(기획·수행·평가·활용)에서 산출되는 핵심 기술자산과 영업비밀이 유출·침해되지 않도록 물리적·관리적·기술적 수단을 통해 보호하는 체계적 활동." },
+  { title: "2. 국가핵심기술 (산업기술보호법)", desc: "국내외 시장에서 차지하는 기술적·경제적 가치가 높거나 관련 산업의 성장잠재력이 높아 해외로 유출될 경우 국가 안전보장 및 국민경제 발전에 중대한 악영향을 줄 우려가 있는 기술." },
+  { title: "3. 영업비밀 3대 성립요건 (부정경쟁방지법)", desc: "① 비공지성(공연히 알려져 있지 않을 것), ② 경제적 유용성(독립된 경제적 가치를 가질 것), ③ 비밀관리성(합리적 노력에 의해 비밀로 유지·관리될 것)." },
+  { title: "4. 물리적 보안 (Physical Security)", desc: "보호구역 설정, 출입통제(생체인식·스피드게이트), CCTV 관제, 연구장비·시제품 반출입 통제, 방문자 스마트폰 촬영 차단 등 물리적 접근 제어." },
+  { title: "5. 관리적 보안 (Administrative Security)", desc: "연구보안 규정 제정, 보안등급 분류, 비밀유지계약(NDA), 핵심인력 전직제한 약정, 전자연구노트 시점인증, 학회 발표 전 사전 보안성 검토." },
+  { title: "6. 기술적 보안 (Technical Security)", desc: "업무망·연구망·인터넷망 분리, 문서보안(DRM), 매체제어(USB 통제), 자료유출방지(DLP), 방화벽·침입탐지(IDS/IPS), 클라우드 암호화 및 SIEM 이상징후 탐지." }
+];
+
+const MODE_COLORS = ["#ffab00", "#b388ff", "#00f0ff", "#00e676"];
+const MODE_NAMES  = [
+  "[1] 물리적 보안 방벽 (Physical)",
+  "[2] 관리적 보안 프로토콜 (Admin)",
+  "[3] 기술적 사이버 실드 (Technical)",
+  "[4] 정상 연구활동 승인 (Approve)"
+];
+
+let canvas = document.getElementById("gameCanvas");
+let ctx = canvas.getContext("2d");
+
+let soundEnabled = true;
+let audioCtx = null;
+
+function playTone(freq, type="sine", dur=0.12, vol=0.12) {
+  if (!soundEnabled) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById("soundBtn").innerText = "사운드: " + (soundEnabled ? "ON" : "OFF");
+}
+
+let currentStageIdx = 0;
+let defenseMode = 0;
+let hp = 100;
+let score = 0;
+let combo = 0;
+let maxCombo = 0;
+let gameState = "TITLE"; // TITLE, PLAYING, QUIZ, STAGE_CLEAR, ALL_CLEAR
+let packets = [];
+let particles = [];
+let lasers = [];
+let spawnQueue = [];
+let spawnTimer = 0;
+let radarAngle = 0;
+let clearedStages = new Set();
+
+function renderStageList() {
+  const container = document.getElementById("stageList");
+  container.innerHTML = "";
+  STAGES.forEach((st, idx) => {
+    const div = document.createElement("div");
+    div.className = "stage-item" + (idx === currentStageIdx ? " active" : "") + (clearedStages.has(idx) ? " cleared" : "");
+    div.onclick = () => startStage(idx);
+    div.innerHTML = `
+      <div class="st-head">
+        <span>${st.week} · ${st.title}</span>
+        <span style="color:${clearedStages.has(idx) ? 'var(--emerald)' : 'var(--cyan)'}">${clearedStages.has(idx) ? '이수완료 ✓' : '진입'}</span>
+      </div>
+      <div class="st-desc">${st.subtitle}</div>
+    `;
+    container.appendChild(div);
+  });
+  document.getElementById("stageProgressTxt").innerText = `${currentStageIdx + 1} / ${STAGES.length}`;
+}
+
+function setDefenseMode(m) {
+  defenseMode = m;
+  for (let i = 0; i < 4; i++) {
+    const b = document.getElementById("modeBtn" + i);
+    if (i === m) b.classList.add("active-mode");
+    else b.classList.remove("active-mode");
+  }
+  const txt = document.getElementById("currentModeTxt");
+  txt.innerText = MODE_NAMES[m];
+  txt.style.color = MODE_COLORS[m];
+  playTone(420 + m * 90, "triangle", 0.08, 0.08);
+}
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "1") setDefenseMode(0);
+  else if (e.key === "2") setDefenseMode(1);
+  else if (e.key === "3") setDefenseMode(2);
+  else if (e.key === "4") setDefenseMode(3);
+});
+
+function addLog(msg, kind="info") {
+  const list = document.getElementById("logList");
+  const item = document.createElement("div");
+  item.className = "log-entry " + (kind === "good" ? "good" : kind === "bad" ? "bad" : "");
+  item.innerHTML = msg;
+  list.prepend(item);
+  while (list.children.length > 25) list.removeChild(list.lastChild);
+}
+
+function updateHUD() {
+  document.getElementById("hpVal").innerText = Math.max(0, hp) + "%";
+  const hpBar = document.getElementById("hpBar");
+  hpBar.style.width = Math.max(0, hp) + "%";
+  hpBar.style.background = hp > 60 ? "var(--emerald)" : hp > 30 ? "var(--amber)" : "var(--crimson)";
+  document.getElementById("scoreVal").innerText = score.toLocaleString();
+  document.getElementById("comboVal").innerText = combo;
+  let rank = score >= 2500 && hp >= 80 ? "S (수석 보안관)" : score >= 1500 ? "A (우수 보안관)" : "B (일반 보안관)";
+  document.getElementById("rankBadge").innerText = "RANK: " + rank;
+}
+
+function showModal(html) {
+  const ov = document.getElementById("modalOverlay");
+  const mc = document.getElementById("modalContent");
+  mc.innerHTML = html;
+  ov.classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("modalOverlay").classList.add("hidden");
+}
+
+function showTitleModal() {
+  gameState = "TITLE";
+  showModal(`
+    <span class="modal-badge">2026학년도 중앙대학교 K-MOOC 「AI 플레이 콘텐츠 제작」 공모전 출품작</span>
+    <div class="modal-title">DEEP-TECH GUARDIAN : R&amp;D 보안 방어 사령부</div>
+    <div class="modal-desc">
+      중앙대학교 <b>장항배 교수님</b>의 K-MOOC 강좌 <b>「첨단전략산업과 기술보호 (연구개발보안)」</b> 1~5주차 커리큘럼을 완벽 반영한 인터랙티브 보안 관제 &amp; 의사결정 웹 미니게임입니다.<br><br>
+      • <b>미션 목표</b>: 국가핵심기술 R&amp;D 코어를 향해 접근하는 위협 패킷의 성격을 분석하여 <b>[1] 물리적 보안 / [2] 관리적 보안 / [3] 기술적 보안 / [4] 정상 연구활동 승인</b> 프로토콜로 정확히 요격·승인하고, 주차별 보스 검증 퀴즈를 돌파하세요!
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-ui primary" style="padding:11px 22px;font-size:14px;" onclick="startCampaign(0)">▶ 작전 개시 (1주차부터 플레이)</button>
+      <button class="btn-ui" style="padding:11px 18px;font-size:13px;" onclick="openCodex()">📘 강좌 핵심 보안 도감 보기</button>
+    </div>
+  `);
+}
+
+function openCodex() {
+  let cards = CODEX_DATA.map(c => `<div class="codex-item"><strong>${c.title}</strong>${c.desc}</div>`).join("");
+  showModal(`
+    <span class="modal-badge">K-MOOC 학습 핵심 요약 도감</span>
+    <div class="modal-title">첨단전략산업과 기술보호 (연구개발보안) 핵심 노트</div>
+    <div class="codex-grid">${cards}</div>
+    <button class="btn-ui primary" style="padding:9px 20px;" onclick="${gameState === 'PLAYING' ? 'closeModal()' : 'startCampaign(currentStageIdx)'}">게임으로 돌아가기</button>
+  `);
+}
+
+function openHowTo() {
+  showModal(`
+    <span class="modal-badge">HOW TO PLAY &amp; 유의사항</span>
+    <div class="modal-title">플레이 방법 및 조작 가이드</div>
+    <div class="modal-desc">
+      <b>1. 방어 프로토콜 선택 (하단 버튼 클릭 또는 키보드 숫자키 1~4)</b><br>
+      &nbsp;&nbsp;• <b style="color:#ffab00;">[KEY 1] 물리적 보안</b>: 출입통제, 클린룸 침입, 장비·문서 무단 반출, 불법 촬영 차단<br>
+      &nbsp;&nbsp;• <b style="color:#b388ff;">[KEY 2] 관리적 보안</b>: 비밀유지계약(NDA), 영업비밀 표시, 사전 보안성 검토, 인력 유출 대응<br>
+      &nbsp;&nbsp;• <b style="color:#00f0ff;">[KEY 3] 기술적 보안</b>: 망분리, DRM 암호화, 매체제어(USB), 방화벽, 해킹·랜섬웨어 차단<br>
+      &nbsp;&nbsp;• <b style="color:#00e676;">[KEY 4] 정상 승인</b>: 적법한 보안심의를 거친 특허·연구노트·수출승인 건은 코어로 안전 통과 또는 즉시 승인 클릭!<br><br>
+      <b>2. 레이더 패킷 요격 및 주차별 보스 검증</b><br>
+      &nbsp;&nbsp;• 레이더 화면에 나타나는 패킷을 클릭하면 현재 선택된 프로토콜 레이저가 발사됩니다.<br>
+      &nbsp;&nbsp;• 각 스테이지의 6개 위협 패킷을 모두 방어하면 <b>주차별 K-MOOC 핵심 법령·이론 검증 퀴즈</b>가 출제됩니다.
+    </div>
+    <button class="btn-ui primary" style="padding:9px 20px;" onclick="${gameState === 'PLAYING' ? 'closeModal()' : 'startCampaign(currentStageIdx)'}">확인 완료 (작전 복귀)</button>
+  `);
+}
+
+function startCampaign(idx=0) {
+  hp = 100;
+  score = 0;
+  combo = 0;
+  clearedStages.clear();
+  updateHUD();
+  startStage(idx);
+}
+
+function startStage(idx) {
+  currentStageIdx = idx;
+  const st = STAGES[idx];
+  renderStageList();
+  document.getElementById("aiTitle").innerText = `${st.week}: ${st.title}`;
+  document.getElementById("aiMessage").innerHTML = st.briefing;
+  packets = [];
+  particles = [];
+  lasers = [];
+  spawnQueue = st.threats.map((t, i) => ({ ...t, idx: i }));
+  spawnTimer = 30;
+  gameState = "PLAYING";
+  closeModal();
+  addLog(`<b>[${st.week} 작전 개시]</b> ${st.title} 방어 프로토콜이 가동되었습니다.`, "info");
+  playTone(580, "sine", 0.18, 0.12);
+}
+
+function spawnPacket(item) {
+  const angle = (Math.random() * Math.PI * 0.85) - (Math.PI * 0.425) + (Math.random() < 0.5 ? 0 : Math.PI);
+  const rx = 430, ry = 215;
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const x = Math.max(85, Math.min(canvas.width - 85, cx + Math.cos(angle) * rx));
+  const y = Math.max(48, Math.min(canvas.height - 48, cy + Math.sin(angle) * ry));
+  const dist = Math.hypot(cx - x, cy - y);
+  const speed = 0.48 + currentStageIdx * 0.06;
+  packets.push({
+    x, y,
+    vx: ((cx - x) / dist) * speed,
+    vy: ((cy - y) / dist) * speed,
+    label: item.label,
+    type: item.type,
+    explain: item.explain,
+    r: 22,
+    pulse: 0
+  });
+}
+
+function createParticles(x, y, color, count=18) {
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const s = 1.2 + Math.random() * 3.8;
+    particles.push({
+      x, y,
+      vx: Math.cos(a) * s,
+      vy: Math.sin(a) * s,
+      life: 28 + Math.random() * 15,
+      color
+    });
+  }
+}
+
+canvas.addEventListener("mousedown", (e) => {
+  if (gameState !== "PLAYING") return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mx = (e.clientX - rect.left) * scaleX;
+  const my = (e.clientY - rect.top) * scaleY;
+
+  // Find clicked packet (including label hitbox)
+  let hitIdx = -1;
+  for (let i = packets.length - 1; i >= 0; i--) {
+    const p = packets[i];
+    if (Math.hypot(mx - p.x, my - p.y) <= 44 || (Math.abs(mx - p.x) <= 130 && Math.abs(my - (p.y - 28)) <= 20)) {
+      hitIdx = i;
+      break;
+    }
+  }
+  if (hitIdx !== -1) {
+    const p = packets[hitIdx];
+    packets.splice(hitIdx, 1);
+    lasers.push({ x1: canvas.width/2, y1: canvas.height/2, x2: p.x, y2: p.y, color: MODE_COLORS[defenseMode], life: 12 });
+    if (defenseMode === p.type) {
+      combo++;
+      if (combo > maxCombo) maxCombo = combo;
+      const pts = 150 + combo * 25;
+      score += pts;
+      createParticles(p.x, p.y, MODE_COLORS[p.type], 22);
+      addLog(`✓ <b>[정확 판정 +${pts}점]</b> "${p.label}" → ${p.explain}`, "good");
+      playTone(680 + combo * 30, "sine", 0.14, 0.13);
+    } else {
+      combo = 0;
+      hp = Math.max(10, hp - 12);
+      createParticles(p.x, p.y, "#ff1744", 22);
+      addLog(`✗ <b>[오판 주의 -12% 무결성]</b> "${p.label}" → ${p.explain}`, "bad");
+      playTone(190, "sawtooth", 0.22, 0.14);
+    }
+    updateHUD();
+  }
+});
+
+function triggerStageQuiz() {
+  gameState = "QUIZ";
+  const st = STAGES[currentStageIdx];
+  const q = st.quiz;
+  const optsHtml = q.opts.map((o, i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join("");
+  showModal(`
+    <span class="modal-badge">${st.week} 핵심 지식 검증 (BOSS QUIZ)</span>
+    <div class="modal-title">${st.title} 마스터 퀴즈</div>
+    <div class="modal-desc" style="color:#eef6ff;font-weight:600;">${q.q}</div>
+    <div class="quiz-options">${optsHtml}</div>
+  `);
+}
+
+function answerQuiz(choice) {
+  const st = STAGES[currentStageIdx];
+  const q = st.quiz;
+  const isCorrect = (choice === q.ans);
+  if (isCorrect) {
+    score += 400;
+    combo += 2;
+    playTone(880, "sine", 0.22, 0.15);
+    addLog(`★ <b>[${st.week} 보스 검증 통과 +400점]</b> ${q.feedback}`, "good");
+  } else {
+    score += 100;
+    playTone(260, "triangle", 0.22, 0.12);
+    addLog(`ℹ <b>[${st.week} 학습 보충 +100점]</b> ${q.feedback}`, "info");
+  }
+  clearedStages.add(currentStageIdx);
+  renderStageList();
+  updateHUD();
+
+  if (currentStageIdx < STAGES.length - 1) {
+    gameState = "STAGE_CLEAR";
+    showModal(`
+      <span class="modal-badge">${st.week} 방어 완료</span>
+      <div class="modal-title">${isCorrect ? "완벽 방어 성공! (STAGE CLEAR)" : "스테이지 방어 완료!"}</div>
+      <div class="modal-desc">
+        ${q.feedback}<br><br>
+        • 누적 보안 기술자산 점수: <b style="color:var(--cyan);">${score.toLocaleString()}점</b> | 현재 보안 무결성: <b style="color:var(--emerald);">${hp}%</b>
+      </div>
+      <button class="btn-ui primary" style="padding:11px 24px;font-size:14px;" onclick="startStage(${currentStageIdx + 1})">다음 주차 작전 진입 (${STAGES[currentStageIdx + 1].week}) →</button>
+    `);
+  } else {
+    gameState = "ALL_CLEAR";
+    showModal(`
+      <span class="modal-badge">전 과정 5주차 방어 완수 (MISSION COMPLETE)</span>
+      <div class="modal-title">축하합니다! 국가핵심기술 R&amp;D 보안 사령부 최종 수호 달성!</div>
+      <div class="modal-desc">
+        중앙대학교 K-MOOC <b>「첨단전략산업과 기술보호 (연구개발보안)」</b> 전 과정(1~5주차)의 핵심 보안 위협을 모두 방어하고 최종 보스 검증까지 완수하셨습니다!<br><br>
+        • <b>최종 점수</b>: <span style="color:var(--cyan);font-weight:900;">${score.toLocaleString()}점</span><br>
+        • <b>최종 보안 무결성</b>: <span style="color:var(--emerald);font-weight:900;">${hp}%</span><br>
+        • <b>최종 보안 감사 등급</b>: <span style="color:var(--amber);font-weight:900;">S-CLASS MASTER GUARDIAN</span>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-ui primary" style="padding:11px 22px;" onclick="startCampaign(0)">다시 플레이하기</button>
+        <button class="btn-ui" style="padding:11px 18px;" onclick="openCodex()">핵심 보안 도감 복습</button>
+      </div>
+    `);
+  }
+}
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+
+  // Draw cyber radar grid
+  ctx.strokeStyle = "rgba(0, 240, 255, 0.11)";
+  ctx.lineWidth = 1;
+  for (let r = 65; r <= 390; r += 65) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy);
+  ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height);
+  ctx.stroke();
+
+  // Rotating radar sweep
+  radarAngle += 0.022;
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, 380);
+  grad.addColorStop(0, "rgba(0, 240, 255, 0.18)");
+  grad.addColorStop(1, "rgba(0, 240, 255, 0)");
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, 380, radarAngle, radarAngle + 0.48);
+  ctx.closePath();
+  ctx.fill();
+
+  // Draw R&D Core
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 38, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0, 114, 255, 0.28)";
+  ctx.fill();
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = MODE_COLORS[defenseMode];
+  ctx.stroke();
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 11px 'Malgun Gothic', sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("중앙대 K-MOOC", cx, cy - 4);
+  ctx.fillStyle = "#00f0ff";
+  ctx.fillText("R&D CORE", cx, cy + 12);
+  ctx.restore();
+
+  if (gameState === "PLAYING") {
+    if (spawnQueue.length > 0) {
+      spawnTimer--;
+      if (spawnTimer <= 0 && packets.length < 3) {
+        spawnPacket(spawnQueue.shift());
+        spawnTimer = 95;
+      }
+    }
+    document.getElementById("waveCounter").innerText = `남은 패킷: ${spawnQueue.length + packets.length}건`;
+
+    for (let i = packets.length - 1; i >= 0; i--) {
+      const p = packets[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.pulse += 0.08;
+
+      const dist = Math.hypot(cx - p.x, cy - p.y);
+      if (dist < 42) {
+        packets.splice(i, 1);
+        if (p.type === 3) {
+          score += 150;
+          combo++;
+          createParticles(cx, cy, "#00e676", 18);
+          addLog(`✓ <b>[정상 자산 코어 도달 +150점]</b> "${p.label}"`, "good");
+          playTone(720, "sine", 0.12, 0.1);
+        } else {
+          combo = 0;
+          hp = Math.max(10, hp - 15);
+          createParticles(cx, cy, "#ff1744", 24);
+          addLog(`⚠ <b>[보안 침투 발생 -15%]</b> "${p.label}" → ${p.explain}`, "bad");
+          playTone(150, "sawtooth", 0.25, 0.15);
+        }
+        updateHUD();
+        continue;
+      }
+
+      // Draw packet node
+      const col = MODE_COLORS[p.type];
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r + Math.sin(p.pulse) * 3, 0, Math.PI * 2);
+      ctx.fillStyle = col + "33";
+      ctx.fill();
+      ctx.lineWidth = 2.2;
+      ctx.strokeStyle = col;
+      ctx.stroke();
+
+      const tagNames = ["물리위협", "관리위협", "기술위협", "정상자산"];
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 10px 'Malgun Gothic', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(tagNames[p.type], p.x, p.y + 4);
+
+      // Draw label pill above packet
+      ctx.font = "bold 11.5px 'Malgun Gothic', sans-serif";
+      const tw = ctx.measureText(p.label).width + 18;
+      const lx = Math.max(tw/2 + 6, Math.min(canvas.width - tw/2 - 6, p.x));
+      const ly = p.y - 32;
+      ctx.fillStyle = "rgba(6, 14, 30, 0.92)";
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(lx - tw/2, ly - 12, tw, 22, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#eef6ff";
+      ctx.fillText(p.label, lx, ly + 3);
+      ctx.restore();
+    }
+
+    if (spawnQueue.length === 0 && packets.length === 0) {
+      triggerStageQuiz();
+    }
+  }
+
+  // Lasers
+  for (let i = lasers.length - 1; i >= 0; i--) {
+    const l = lasers[i];
+    ctx.save();
+    ctx.strokeStyle = l.color;
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(l.x1, l.y1);
+    ctx.lineTo(l.x2, l.y2);
+    ctx.stroke();
+    ctx.restore();
+    l.life--;
+    if (l.life <= 0) lasers.splice(i, 1);
+  }
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const pt = particles[i];
+    pt.x += pt.vx;
+    pt.y += pt.vy;
+    pt.life--;
+    ctx.fillStyle = pt.color;
+    ctx.fillRect(pt.x - 2, pt.y - 2, 4, 4);
+    if (pt.life <= 0) particles.splice(i, 1);
+  }
+
+  requestAnimationFrame(loop);
+}
+
+renderStageList();
+updateHUD();
+showTitleModal();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
